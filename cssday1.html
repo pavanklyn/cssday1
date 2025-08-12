@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CSS Specificity / Priority Demo</title>
+
+  <style>
+    /* 1) Element selector (lowest specificity) */
+    p {
+      color: darkgreen;
+      font-weight: normal;
+    }
+
+    /* 2) Class selector (higher than element) */
+    .notice {
+      color: darkorange;
+      font-weight: bold;
+    }
+
+    /* 3) Attribute selector (same level as class) */
+    p[role="alert"] {
+      color: purple;
+    }
+
+    /* 4) ID selector (higher than class) */
+    #mainNotice {
+      color: dodgerblue;
+      font-size: 18px;
+    }
+
+    /* 5) Class with !important (can override rules unless an inline !important exists) */
+    .override-important {
+      color: crimson !important;
+      text-decoration: underline;
+    }
+
+    /* 6) ID without !important (will lose to the class with !important above) */
+    #losesToImportant {
+      color: teal;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS Priority (Specificity) Demo</h1>
+
+  <!-- Element selector applies (darkgreen) -->
+  <p>This paragraph uses only the element selector (p).</p>
+
+  <!-- Class selector overrides element (darkorange, bold) -->
+  <p class="notice">This paragraph uses a <code>.notice</code> class (class > element).</p>
+
+  <!-- Attribute selector (purple) vs class (darkorange): same specificity — latter rule order wins -->
+  <p class="notice" role="alert">
+    This paragraph has both <code>role="alert"</code> (attribute selector) and <code>.notice</code>.
+    Because .notice appears later in the stylesheet here, its color applies (class/attribute tie — later wins).
+  </p>
+
+  <!-- ID selector overrides class and element (dodgerblue) -->
+  <p id="mainNotice" class="notice">This paragraph has an ID and a class — ID wins (id > class > element).</p>
+
+  <!-- Inline style overrides stylesheet rules (unless stylesheet rule has !important) -->
+  <p id="inlineExample" style="color: mediumvioletred;">
+    This paragraph has an <strong>inline style</strong> — inline styles beat ID/class/element.
+  </p>
+
+  <!-- Class with !important overrides ID without !important -->
+  <p id="losesToImportant" class="override-important">
+    This paragraph has an ID and a class. The class has <code>!important</code>, so the class color (crimson) wins.
+  </p>
+
+  <!-- Inline style with !important (highest precedence) -->
+  <p style="color: black !important;">
+    Inline style with <code>!important</code> — this beats stylesheet rules including class !important.
+  </p>
+
+  <hr />
+  <p>
+    Summary (highest → lowest): <strong>inline style with !important</strong> → <strong>other !important rules</strong>
+    → <strong>inline styles</strong> → <strong>ID selectors</strong> → <strong>class/attribute/pseudo-class</strong>
+    → <strong>element/pseudo-element</strong> → <em>browser defaults</em>.
+  </p>
+</body>
+</html>
